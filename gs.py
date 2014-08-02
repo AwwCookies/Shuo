@@ -1,6 +1,7 @@
 class Module:
     def __init__(self):
         pass
+
     def on_message(self, data):
         pass
 
@@ -11,4 +12,7 @@ class Module:
         pass
 
     def on_notice(self, data):
+        pass
+
+    def on_mode(self, data):
         pass

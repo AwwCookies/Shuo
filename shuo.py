@@ -6,7 +6,7 @@ import socket
 import string
 import os
 import glob
-import module
+import gs
 execfile("./config.py")
 running = True
 readbuffer = ''
@@ -39,6 +39,10 @@ def register_commands(commands):
 
 def startswith(string, word, splitby=' '):
     return string.split(splitby)[0] == word
+
+def set_mode(channel, mode, nick):
+    sock.send("MODE %s %s %s\r\n" % (channel, mode, nick)) ## Sent Mode
+    log('(set_mode) Setting %s on %s in %s' % (mode, nick, channel), 'info')
 #-------------Basic IRC Commands -----------#
 def join_channel(channel):
     '''Joins the bot to a channel.'''
@@ -52,6 +56,12 @@ def part_channel(channel):
     log("part_channel: Parting channel '%s'" % channel, 'info')
     db['Joined Channels'].remove(channel)
 
+def change_nick(nick):
+    ''' Change the nick of the bot.'''
+    log('(change_nick) changing nick to: %s' % nick)
+    sock.send('NICK %s\r\n' % nick)
+    ABOUT["BotName"] = nick
+
 def send_message(channel, message, bypass=False):
     if channel in OTHER['Approved Channels'] or bypass:
         sock.send('PRIVMSG %s :%s\r\n' % (channel, message))
@@ -62,6 +72,9 @@ def send_message(channel, message, bypass=False):
 def autojoin():
     for channel in OTHER['Autojoin']:
         join_channel(channel)
+#-------------------------------------------#
+if not os.path.exists("modules"):
+    os.system("mkdir modules")
 #-------------------------------------------#
 while running:
     readbuffer += sock.recv(1024)
@@ -77,26 +90,22 @@ while running:
         print data
     except:
         pass
-
     #-------------------------------#
     if db['FIRST_RUN']:
         autojoin()
     #------------Modules------------#
-    mod_files = glob.glob('./modules/*.py')
-    for mod in mod_files:
+    for mod in glob.glob('./modules/*.py'):
         m = open(mod)
         if m.readlines()[0].strip() == '## GINGERSNAP MODULE ##':
-            GS = {  # Dict mapped to all aviliable data and funcations for modules.
-                'Send Message': send_message,
-                'Join Channel': join_channel,
-                'Part Channel': part_channel,
-                'Log': log,
-            }
+            data['Args'] = data['Message'].split() 
             execfile(mod)
             if data['Type'] == 'PRIVMSG': GS_MODULE().on_message(data);
             if data['Type'] == 'PART': GS_MODULE().on_part(data);
             if data['Type'] == 'JOIN': GS_MODULE().on_join(data);
             if data['Type'] == 'NOTICE': GS_MODULE().on_notice(data);
+            if data['Type'] == 'MODE':
+                data['Mode'] = data['Message'].split()[0]
+                GS_MODULE().on_mode(data)
         else:
             print("%s does not have '## GINGERSNAP MODULE ##' header." % mod)
         m.close()
