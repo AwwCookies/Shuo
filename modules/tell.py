@@ -46,10 +46,10 @@ class Tell(sh.Module):
                 message = msg.get('msg')
                 send_message(channel, message)
             self.rem_msg(data['Nick'].lower())
-        elif startswith(data['Message'], self.cmd_prefix + 'tell'):
+        if startswith(data['Message'], self.cmd_prefix + 'tell'):
             if len(data['Args']) > 1:
                 self.add_msg(data['Args'][1].lower(), '<' + data['Nick'] + '> ' + ' '.join(data['Message'].split()[2:]) , data['Channel'])
-                send_message(data['Channel'], 'Okay')
+                send_message(data['Channel'], sh.color('Okay', 'blue'))
 
 
 
