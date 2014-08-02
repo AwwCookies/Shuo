@@ -10,6 +10,7 @@ import sh
 import getpass
 import keystore
 from termcolor import cprint
+import thread
 execfile("./config.py")
 running = True
 readbuffer = ''
@@ -42,6 +43,20 @@ def connect():
     sock.send("USER %s %s bla :%s\r\n" % (CONN_SETTINGS["Ident"], CONN_SETTINGS["Server"], CONN_SETTINGS["RealName"]))  # Tell the server your user info
 connect()
 
+#-------------------------------------------#
+def term_input(x):
+    while True:
+        try:
+            i = raw_input('> ')
+            args = i.split()
+            if args[0] == 'nick':
+                change_nick(args[1])
+            if args[0] == 'join':
+                join_channel(args[1])
+            if args[0] == 'part':
+                part_channel(args[1])
+        except Exception, e:
+            pass
 #-------------------------------------------#
 def log(msg, p = "info"):
     if p == "info":
@@ -129,16 +144,20 @@ while running:
     if db['FIRST_RUN']:
         nickserv_auth()
         autojoin()
+        thread.start_new_thread(term_input, (1,))
     #------------Modules------------#
-    for mod in db['modules']:
-        data['Args'] = data['Message'].split() 
-        if data['Type'] == 'PRIVMSG': mod.on_message(data);
-        if data['Type'] == 'PART': mod.on_part(data);
-        if data['Type'] == 'JOIN': mod.on_join(data);
-        if data['Type'] == 'NOTICE': mod.on_notice(data);
-        if data['Type'] == 'MODE':
-            data['Mode'] = data['Message'].split()[0]
-            mod.on_mode(data)
+    try:
+        for mod in db['modules']:
+            data['Args'] = data['Message'].split() 
+            if data['Type'] == 'PRIVMSG': mod.on_message(data);
+            if data['Type'] == 'PART': mod.on_part(data);
+            if data['Type'] == 'JOIN': mod.on_join(data);
+            if data['Type'] == 'NOTICE': mod.on_notice(data);
+            if data['Type'] == 'MODE':
+                data['Mode'] = data['Message'].split()[0]
+                mod.on_mode(data)
+    except Exception, e:
+        print(e.message)
     #-------------------------------#
 
     data = {"Nick":"NULL", "Host":"NULL", "Type":"NULL", "Channel":"NULL", "Message":"NULL"}
