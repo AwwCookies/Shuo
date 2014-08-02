@@ -1,8 +1,16 @@
-## GINGERSNAP MODULE ##
+## SHUO MODULE ##
+"""
+Channel Management
 
-class GS_MODULE(gs.Module):
+Version: 1.0.0
+Author: Emma Jones (AwwCookies)
+
+Desc:
+Add channel management funcations to Shuo
+"""
+class SH_MODULE(sh.Module):
     def __init__(self):
-        gs.Module.__init__(self)
+        sh.Module.__init__(self)
         self.admins = [] + OTHER['OWNER']
         self.cmd_prefix = '@'
         self.hosts = {}

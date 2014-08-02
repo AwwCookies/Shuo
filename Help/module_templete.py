@@ -1,8 +1,8 @@
-# Gingersnap module templete file
+# Shuo module templete file
 
 #-------------------------------#
 
-class GS_MODULE(module.Module):  # Class MUST be called GS_MODULE
+class SH_MODULE(sh.Module):  # Class MUST be called SH_MODULE
     def __init__(self):
         module.Module.__init__(self)
     def on_message(self, data):

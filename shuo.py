@@ -6,7 +6,7 @@ import socket
 import string
 import os
 import glob
-import gs
+import sh
 execfile("./config.py")
 running = True
 readbuffer = ''
@@ -96,18 +96,18 @@ while running:
     #------------Modules------------#
     for mod in glob.glob('./modules/*.py'):
         m = open(mod)
-        if m.readlines()[0].strip() == '## GINGERSNAP MODULE ##':
+        if m.readlines()[0].strip() == '## SHUO MODULE ##':
             data['Args'] = data['Message'].split() 
             execfile(mod)
-            if data['Type'] == 'PRIVMSG': GS_MODULE().on_message(data);
-            if data['Type'] == 'PART': GS_MODULE().on_part(data);
-            if data['Type'] == 'JOIN': GS_MODULE().on_join(data);
-            if data['Type'] == 'NOTICE': GS_MODULE().on_notice(data);
+            if data['Type'] == 'PRIVMSG': SH_MODULE().on_message(data);
+            if data['Type'] == 'PART': SH_MODULE().on_part(data);
+            if data['Type'] == 'JOIN': SH_MODULE().on_join(data);
+            if data['Type'] == 'NOTICE': SH_MODULE().on_notice(data);
             if data['Type'] == 'MODE':
                 data['Mode'] = data['Message'].split()[0]
-                GS_MODULE().on_mode(data)
+                SH_MODULE().on_mode(data)
         else:
-            print("%s does not have '## GINGERSNAP MODULE ##' header." % mod)
+            print("%s does not have '## SHUO MODULE ##' header." % mod)
         m.close()
     #-------------------------------#
 
