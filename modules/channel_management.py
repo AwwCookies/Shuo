@@ -120,5 +120,15 @@ class SH_MODULE(sh.Module):
             if startswith(data['Message'], self.cmd_prefix + 'unmute'):
                 if len(data['Args']) > 1:
                     self.unmute(data['Args'][1])
+            # Command: Join
+            if startswith(data['Message'], self.cmd_prefix + 'join'):
+                if len(data['Args']) > 1:
+                    join_channel(data['Args'][1])
+            # Command: Part
+            if startswith(data['Message'], self.cmd_prefix + 'part'):
+                if len(data['Args']) > 1:
+                    part_channel(data['Args'][1])
+                else:
+                    part_channel(data['Channel'])
         else:
             pass

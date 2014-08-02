@@ -7,6 +7,7 @@ import string
 import os
 import glob
 import sh
+import getpass
 execfile("./config.py")
 running = True
 readbuffer = ''
@@ -60,7 +61,6 @@ def change_nick(nick):
     ''' Change the nick of the bot.'''
     log('(change_nick) changing nick to: %s' % nick)
     sock.send('NICK %s\r\n' % nick)
-    ABOUT["BotName"] = nick
 
 def send_message(channel, message, bypass=False):
     if channel in OTHER['Approved Channels'] or bypass:
@@ -68,10 +68,20 @@ def send_message(channel, message, bypass=False):
         log("send_message: Sending a message to %s - (%s)." % (channel, message))
     else:
         log("send_message: Attempted to send a message to %s but it is not in the approved channel list")
+
+def send_notice(channel, message, bypass=False):
+    if channel in OTHER['Approved Channels'] or bypass:
+        sock.send('NOTICE %s :%s\r\n' % (channel, message))
+        log("send_notice: Sending a notice to %s - (%s)." % (channel, message))
+    else:
+        log("send_notice: Attempted to send a notice to %s but it is not in the approved channel list")
 #--------------Built in Modules-------------#
 def autojoin():
     for channel in OTHER['Autojoin']:
         join_channel(channel)
+
+def nickserv_auth():
+    send_message('NickServ', 'IDENTIFY %s' % getpass.getpass('Nickserv Password: '), True)
 #-------------------------------------------#
 if not os.path.exists("modules"):
     os.system("mkdir modules")
@@ -91,7 +101,13 @@ while running:
     except:
         pass
     #-------------------------------#
+    # Prompt to choose new nick if current one is already being used.
+    if data['Type'] == '*' and 'Nickname is already in use.' in data['Message']:
+        print("%s is already being used. Please choose a new nick." % BOT['Nick'])
+        change_nick(str(raw_input('Nick: ')))
+
     if db['FIRST_RUN']:
+        nickserv_auth()
         autojoin()
     #------------Modules------------#
     for mod in glob.glob('./modules/*.py'):
