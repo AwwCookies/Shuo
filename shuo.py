@@ -29,7 +29,6 @@ for mod in glob.glob('./modules/*.py'):
     with open(mod, 'r') as f:
         if f.readlines()[0].strip() == '## SHUO MODULE ##':
             execfile(mod)
-            
 #-------------------------#
 # Connect to IRC Server
 def connect():

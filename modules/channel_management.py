@@ -36,25 +36,25 @@ class ChannelManagement(sh.Module):
 
     def ban(self, nick):
         if nick in self.hosts:
-            set_mode(data['Channel'], '+b', '*!*@' + self.hosts[data['Nick']])
+            set_mode(data['Channel'], '+b', '*!*@' + self.hosts[nick])
         else:
             pass
 
     def unban(self, nick):
         if nick in self.hosts:
-            set_mode(data['Channel'], '-b', '*!*@' + self.hosts[data['Nick']])
+            set_mode(data['Channel'], '-b', '*!*@' + self.hosts[nick])
         else:
             pass
 
     def mute(self, nick):
         if nick in self.hosts:
-            set_mode(data['Channel'], '+q', '*!*@' + self.hosts[data['Nick']])
+            set_mode(data['Channel'], '+q', '*!*@' + self.hosts[nick])
         else:
             pass        
 
     def unmute(self, nick):
         if nick in self.hosts:
-            set_mode(data['Channel'], '-q', '*!*@' + self.hosts[data['Nick']])
+            set_mode(data['Channel'], '-q', '*!*@' + self.hosts[nick])
         else:
             pass 
 #-------------------------------------------#
