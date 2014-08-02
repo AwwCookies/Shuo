@@ -8,6 +8,8 @@ import os
 import glob
 import sh
 import getpass
+import keystore
+
 execfile("./config.py")
 running = True
 readbuffer = ''
@@ -69,6 +71,13 @@ def send_message(channel, message, bypass=False):
     else:
         log("send_message: Attempted to send a message to %s but it is not in the approved channel list")
 
+def do_action(channel, message, bypass=False):
+    if channel in OTHER['Approved Channels'] or bypass:
+        sock.send('PRIVMSG %s :\x01ACTION %s\x01\r\n' % (channel, message))
+        log("send_message: Sending a message to %s - (%s)." % (channel, message))
+    else:
+        log("send_message: Attempted to send a message to %s but it is not in the approved channel list")
+
 def send_notice(channel, message, bypass=False):
     if channel in OTHER['Approved Channels'] or bypass:
         sock.send('NOTICE %s :%s\r\n' % (channel, message))
@@ -81,10 +90,11 @@ def autojoin():
         join_channel(channel)
 
 def nickserv_auth():
+    '''Auths you with nickserv'''
     send_message('NickServ', 'IDENTIFY %s' % getpass.getpass('Nickserv Password: '), True)
 #-------------------------------------------#
 if not os.path.exists("modules"):
-    os.system("mkdir modules")
+    os.mkdir("modules")
 #-------------------------------------------#
 while running:
     readbuffer += sock.recv(1024)
