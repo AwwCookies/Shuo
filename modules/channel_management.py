@@ -8,7 +8,7 @@ Author: Emma Jones (AwwCookies)
 Desc:
 Add channel management funcations to Shuo
 """
-class SH_MODULE(sh.Module):
+class ChannelManagement(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
         self.admins = [] + OTHER['OWNER']
@@ -132,3 +132,5 @@ class SH_MODULE(sh.Module):
                     part_channel(data['Channel'])
         else:
             pass
+#-----------------#
+module(ChannelManagement, 'Channel Management')

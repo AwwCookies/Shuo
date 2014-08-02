@@ -9,7 +9,7 @@ import glob
 import sh
 import getpass
 import keystore
-
+from termcolor import cprint
 execfile("./config.py")
 running = True
 readbuffer = ''
@@ -17,8 +17,19 @@ readbuffer = ''
 db = {
     'Joined Channels': [],
     'FIRST_RUN': True,
-    'commands': {}
+    'commands': {},
+    'modules': [],
 }
+#------------Load Mods-------------#
+def module(mod_class, name):
+    db['modules'].append(mod_class())
+    print("Loaded module: %s" % name)
+
+for mod in glob.glob('./modules/*.py'):
+    with open(mod, 'r') as f:
+        if f.readlines()[0].strip() == '## SHUO MODULE ##':
+            execfile(mod)
+            
 #-------------------------#
 # Connect to IRC Server
 
@@ -113,28 +124,22 @@ while running:
     #-------------------------------#
     # Prompt to choose new nick if current one is already being used.
     if data['Type'] == '*' and 'Nickname is already in use.' in data['Message']:
-        print("%s is already being used. Please choose a new nick." % BOT['Nick'])
+        cprint("%s is already being used. Please choose a new nick." % BOT['Nick'], 'red')
         change_nick(str(raw_input('Nick: ')))
 
     if db['FIRST_RUN']:
         nickserv_auth()
         autojoin()
     #------------Modules------------#
-    for mod in glob.glob('./modules/*.py'):
-        m = open(mod)
-        if m.readlines()[0].strip() == '## SHUO MODULE ##':
-            data['Args'] = data['Message'].split() 
-            execfile(mod)
-            if data['Type'] == 'PRIVMSG': SH_MODULE().on_message(data);
-            if data['Type'] == 'PART': SH_MODULE().on_part(data);
-            if data['Type'] == 'JOIN': SH_MODULE().on_join(data);
-            if data['Type'] == 'NOTICE': SH_MODULE().on_notice(data);
-            if data['Type'] == 'MODE':
-                data['Mode'] = data['Message'].split()[0]
-                SH_MODULE().on_mode(data)
-        else:
-            print("%s does not have '## SHUO MODULE ##' header." % mod)
-        m.close()
+    for mod in db['modules']:
+        data['Args'] = data['Message'].split() 
+        if data['Type'] == 'PRIVMSG': mod.on_message(data);
+        if data['Type'] == 'PART': mod.on_part(data);
+        if data['Type'] == 'JOIN': mod.on_join(data);
+        if data['Type'] == 'NOTICE': mod.on_notice(data);
+        if data['Type'] == 'MODE':
+            data['Mode'] = data['Message'].split()[0]
+            mod.on_mode(data)
     #-------------------------------#
 
     data = {"Nick":"NULL", "Host":"NULL", "Type":"NULL", "Channel":"NULL", "Message":"NULL"}

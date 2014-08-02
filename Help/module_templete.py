@@ -1,8 +1,8 @@
-# Shuo module templete file
+## SHUO MODULE ##
 
 #-------------------------------#
 
-class SH_MODULE(sh.Module):  # Class MUST be called SH_MODULE
+class SH_MODULE(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
     def on_message(self, data):
@@ -16,3 +16,9 @@ class SH_MODULE(sh.Module):  # Class MUST be called SH_MODULE
 
     def on_notice(self, data):
         pass
+
+    def on_mode(self, data):
+        pass
+
+#----------#
+db['modules'].append(SH_MODULE())

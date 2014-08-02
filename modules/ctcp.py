@@ -11,7 +11,7 @@ Allows Shuo to reply to CTCP's
 
 import time
 
-class SH_MODULE(sh.Module): 
+class CTCP(sh.Module): 
     def __init__(self):
         sh.Module.__init__(self)
         self.replies = {
@@ -26,3 +26,6 @@ class SH_MODULE(sh.Module):
                 send_notice(data['Nick'], time.time(), True)
             elif 'PING' in data['Message'].upper():
                 send_notice(data['Nick'], "\x01PING %s\x01" % ' '.join(data["Message"].replace("\x01","").split()[1:]), True)
+
+#---------#
+module(CTCP, 'CTCP')

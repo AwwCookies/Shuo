@@ -11,7 +11,7 @@ This will return either "Go to sleep" or "Stay on IRC"
 
 import random
 
-class SH_MODULE(sh.Module):
+class Ask(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
         self.cmd_prefix = "@"
@@ -22,3 +22,6 @@ class SH_MODULE(sh.Module):
     def on_message(self, data):
         if startswith(data['Message'], self.cmd_prefix + 'ask'):
             send_message(data['Channel'], self.ask(' '.join(data['Message'].split()[1:])))
+
+#--------#
+module(Ask, 'Ask')
