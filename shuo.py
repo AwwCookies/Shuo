@@ -32,8 +32,8 @@ for mod in glob.glob('./modules/*.py'):
             
 #-------------------------#
 # Connect to IRC Server
-
 def connect():
+    cprint('Connecting to: %s as: %s' % (CONN_SETTINGS['Server'], BOT['Nick']), 'blue')
     global sock
     sock = socket.socket()  # Create a new socket
     if CONN_SETTINGS["BIND"] != "": sock.bind((CONN_SETTINGS["BIND"], 0))  # BIND to an IP 
