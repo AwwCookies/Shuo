@@ -21,7 +21,7 @@ class Ask(sh.Module):
 
     def on_message(self, data):
         if startswith(data['Message'], self.cmd_prefix + 'ask'):
-            send_message(data['Channel'], self.ask(' '.join(data['Message'].split()[1:])))
+            send_message(data['Channel'], self.ask(' '.join(data['Message'].split()[1:])).strip())
 
 #--------#
 module(Ask, 'Ask')

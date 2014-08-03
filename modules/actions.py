@@ -14,7 +14,7 @@ class Actions(sh.Module):
         sh.Module.__init__(self)
         self.cmd_prefix = '~'
         self.actions = {
-            'hug': '(>^.^)> $nick'
+            'hug': '(>^.^)> $nick',
         }
 
     def parse(self, text, data):

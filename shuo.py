@@ -10,7 +10,6 @@ import sh
 import getpass
 import keystore
 from termcolor import cprint
-import thread
 execfile("./config.py")
 running = True
 readbuffer = ''
@@ -44,19 +43,7 @@ def connect():
 connect()
 
 #-------------------------------------------#
-def term_input(x):
-    while True:
-        try:
-            i = raw_input('> ')
-            args = i.split()
-            if args[0] == 'nick':
-                change_nick(args[1])
-            if args[0] == 'join':
-                join_channel(args[1])
-            if args[0] == 'part':
-                part_channel(args[1])
-        except Exception, e:
-            pass
+
 #-------------------------------------------#
 def log(msg, p = "info"):
     if p == "info":
@@ -144,7 +131,6 @@ while running:
     if db['FIRST_RUN']:
         nickserv_auth()
         autojoin()
-        thread.start_new_thread(term_input, (1,))
     #------------Modules------------#
     try:
         for mod in db['modules']:
