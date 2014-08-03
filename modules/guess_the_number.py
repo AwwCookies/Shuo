@@ -1,7 +1,16 @@
 ## SHUO MODULE ##
 
 """
+Guess the number!
 
+Version: 1.0.0
+Author: Emma Jones (AwwCookies)
+
+Desc: Guess the number between 0 and 100
+
+Commands: 
+    -gtn (Starts a game)
+    -guess (Take a guess)
 """
 
 import random
