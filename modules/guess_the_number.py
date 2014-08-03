@@ -11,6 +11,7 @@ Desc: Guess the number between 0 and 100
 Commands: 
     -gtn (Starts a game)
     -guess (Take a guess)
+    -quit (End the game)
 """
 
 import random
