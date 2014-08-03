@@ -17,6 +17,9 @@ class Module:
     def on_mode(self, data):
         pass
 
+    def on_nick(self, data):
+        pass
+
 def color(text, c):
     colors = {
         'white': '\x0300',

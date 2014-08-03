@@ -141,6 +141,7 @@ while running:
             if data['Type'] == 'PART': mod.on_part(data);
             if data['Type'] == 'JOIN': mod.on_join(data);
             if data['Type'] == 'NOTICE': mod.on_notice(data);
+            if data['Type'] == 'NICK': mon.on_nick(data);
             if data['Type'] == 'MODE':
                 data['Mode'] = data['Message'].split()[0]
                 mod.on_mode(data)

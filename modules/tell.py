@@ -50,8 +50,5 @@ class Tell(sh.Module):
             if len(data['Args']) > 1:
                 self.add_msg(data['Args'][1].lower(), '<' + data['Nick'] + '> ' + ' '.join(data['Message'].split()[2:]) , data['Channel'])
                 send_message(data['Channel'], sh.color('Okay', 'blue'))
-
-
-
 #-----------------#
 module(Tell, 'Tell')
