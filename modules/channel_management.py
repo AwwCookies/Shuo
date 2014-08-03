@@ -14,12 +14,13 @@ class ChannelManagement(sh.Module):
         self.admins = [] + OTHER['OWNER']
         self.cmd_prefix = '@'
         self.hosts = {}
+        self.kick_msg = 'Bye!'
 
     def _allowed(self, host):
         if host in self.admins:
             return True
 #-------------------------------------------#
-    def kick(self, nick, msg='GO AWAY.'):
+    def kick(self, nick, msg=''):
         sock.send('KICK %s %s :%s\r\n' % (data['Channel'], nick, msg))
 
     def op(self, nick):

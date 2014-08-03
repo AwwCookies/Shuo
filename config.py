@@ -18,6 +18,6 @@ CONN_SETTINGS = {
 OTHER = {
     "Autojoin": ["##Aww-Bot", '##Aww'],
     'CMD_PREFIX': '>',
-    'Approved Channels': ['##Aww-Bot', '#Aww'],
+    'Approved Channels': ['##Aww-Bot', '##Aww'],
     'OWNER': ['the-cookie-princess.com'],
 }
