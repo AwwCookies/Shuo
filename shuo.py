@@ -47,7 +47,9 @@ connect()
 #-------------------------------------------#
 def log(msg, p = "info"):
     if p == "info":
-        print("[info]: %s" % msg)
+        cprint("[info]: %s" % msg, 'grey')
+    elif p == 'warning':
+        cprint("[warning]: %s" % msg, 'yellow')
 
 def register_commands(commands):
     pass
@@ -79,23 +81,23 @@ def change_nick(nick):
 def send_message(channel, message, bypass=False):
     if channel in OTHER['Approved Channels'] or bypass:
         sock.send('PRIVMSG %s :%s\r\n' % (channel, message))
-        log("send_message: Sending a message to %s - (%s)." % (channel, message))
+        log("send_message [bypass = %s]: Sending a message to %s - (%s)." % (bypass, channel, message))
     else:
-        log("send_message: Attempted to send a message to %s but it is not in the approved channel list")
+        log("send_message: Attempted to send a message to %s but it is not in the approved channel list", 'warning')
 
 def do_action(channel, message, bypass=False):
     if channel in OTHER['Approved Channels'] or bypass:
         sock.send('PRIVMSG %s :\x01ACTION %s\x01\r\n' % (channel, message))
-        log("send_message: Sending a message to %s - (%s)." % (channel, message))
+        log("send_message [bypass = %s]: Sending a message to %s - (%s)." % (bypass, channel, message))
     else:
-        log("send_message: Attempted to send a message to %s but it is not in the approved channel list")
+        log("send_message: Attempted to send a message to %s but it is not in the approved channel list", 'warning')
 
 def send_notice(channel, message, bypass=False):
     if channel in OTHER['Approved Channels'] or bypass:
         sock.send('NOTICE %s :%s\r\n' % (channel, message))
-        log("send_notice: Sending a notice to %s - (%s)." % (channel, message))
+        log("send_message [bypass = %s]: Sending a message to %s - (%s)." % (bypass, channel, message))
     else:
-        log("send_notice: Attempted to send a notice to %s but it is not in the approved channel list")
+        log("send_notice: Attempted to send a notice to %s but it is not in the approved channel list", 'warning')
 #--------------Built in Modules-------------#
 def autojoin():
     for channel in OTHER['Autojoin']:
