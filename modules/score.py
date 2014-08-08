@@ -1,6 +1,9 @@
 ## SHUO MODULE ##
 """
+Score
 
+Version 1.0.0
+Author: Emma Jones (AwwCookies)
 """
 
 import os

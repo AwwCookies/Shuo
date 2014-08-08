@@ -17,6 +17,5 @@ class Correction(sh.Module):
             send_message(data['Channel'], data['Nick'] + ', meant to say: ' + correction)
         else:
             self.messages[data['Nick']] = data['Message']
-
 #------#
 module(Correction, 'Correction')

@@ -6,7 +6,7 @@ BOT = {
 }
 
 CONN_SETTINGS = {
-    "Server": "chat.freenode.net", # Example: "chat.freenode.net"
+    "Server": "localhost", # Example: "chat.freenode.net"
     "ServerPassword": "", # Example: "password"; leave blank if there is no server password
     "Port": 6667, # 6667
     "Ident": BOT['Nick'], # Example: "Gingersnap"
@@ -19,5 +19,6 @@ OTHER = {
     "Autojoin": ["##Aww-Bot", '##Aww'],
     'CMD_PREFIX': '>',
     'Approved Channels': ['##Aww-Bot', '##Aww'],
-    'OWNER': ['the-cookie-princess.com'],
+    'OWNER': ['princess-of-cooki.es', '127.0.0.1'],
+    'NickServ': str(raw_input('NickServ: ')),
 }

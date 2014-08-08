@@ -2,3 +2,4 @@ shuo.sublime-project
 shuo.sublime-workspace
 *.pyc
 *.json
+logs.csv

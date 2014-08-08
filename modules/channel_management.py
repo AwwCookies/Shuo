@@ -5,8 +5,7 @@ Channel Management
 Version: 1.0.0
 Author: Emma Jones (AwwCookies)
 
-Desc:
-Add channel management funcations to Shuo
+Desc: Add channel management funcations to Shuo
 """
 class ChannelManagement(sh.Module):
     def __init__(self):

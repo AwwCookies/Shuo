@@ -20,7 +20,7 @@ db = {
     'commands': {},
     'modules': [],
 }
-#------------Load Mods-------------#
+#--------Load Mods--------#
 def module(mod_class, name):
     db['modules'].append(mod_class())
     print("Loaded module: %s" % name)
@@ -105,7 +105,7 @@ def autojoin():
 
 def nickserv_auth():
     '''Auths you with nickserv'''
-    send_message('NickServ', 'IDENTIFY %s' % getpass.getpass('Nickserv Password: '), True)
+    send_message('NickServ', 'IDENTIFY %s' % OTHER['NickServ'], True)
 #-------------------------------------------#
 if not os.path.exists("modules"):
     os.mkdir("modules")
