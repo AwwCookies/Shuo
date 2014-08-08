@@ -15,6 +15,7 @@ class Ask(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
         self.cmd_prefix = "@"
+        self.name = "Ask"
 
     def ask(self, string):
         return random.choice(string.split('or'))
@@ -24,4 +25,4 @@ class Ask(sh.Module):
             send_message(data['Channel'], self.ask(' '.join(data['Message'].split()[1:])).strip())
 
 #--------#
-module(Ask, 'Ask')
+module(Ask)

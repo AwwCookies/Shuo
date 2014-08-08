@@ -10,6 +10,7 @@ Desc: Add channel management funcations to Shuo
 class ChannelManagement(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
+        self.name = "Channel Management"
         self.admins = [] + OTHER['OWNER']
         self.cmd_prefix = '@'
         self.hosts = {}
@@ -133,4 +134,4 @@ class ChannelManagement(sh.Module):
         else:
             pass
 #-----------------#
-module(ChannelManagement, 'Channel Management')
+module(ChannelManagement)

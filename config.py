@@ -6,7 +6,7 @@ BOT = {
 }
 
 CONN_SETTINGS = {
-    "Server": "localhost", # Example: "chat.freenode.net"
+    "Server": "chat.freenode.net", # Example: "chat.freenode.net"
     "ServerPassword": "", # Example: "password"; leave blank if there is no server password
     "Port": 6667, # 6667
     "Ident": BOT['Nick'], # Example: "Gingersnap"

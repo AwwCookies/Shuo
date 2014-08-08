@@ -13,6 +13,7 @@ import time
 class CTCP(sh.Module): 
     def __init__(self):
         sh.Module.__init__(self)
+        self.name = "CTCP"
         self.replies = {
             'Version': 'Shuo, Version: 0.0.1 (https://github.com/AwwCookies/Shuo) Created by Emma Jones (AwwCookies)',
         }
@@ -26,4 +27,4 @@ class CTCP(sh.Module):
             elif 'PING' in data['Message'].upper():
                 send_notice(data['Nick'], "\x01PING %s\x01" % ' '.join(data["Message"].replace("\x01","").split()[1:]), True)
 #---------#
-module(CTCP, 'CTCP')
+module(CTCP)

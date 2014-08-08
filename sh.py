@@ -1,6 +1,6 @@
 class Module:
     def __init__(self):
-        pass
+        self.name = "Unnamed Module"
 
     def on_message(self, data):
         pass

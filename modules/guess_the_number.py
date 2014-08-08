@@ -21,6 +21,7 @@ class GTN(sh.Module):
         sh.Module.__init__(self)
         self.player = None
         self.cmd_prefix = '-'
+        self.name = "Guess The Number"
         self.number = random.randint(0, 100)
         self.running = False
 
@@ -52,5 +53,5 @@ class GTN(sh.Module):
             self.start_game(data['Host'])
             send_message(data['Channel'], 'Guess the number! Player: %s' % data['Host'])
 #------#
-module(GTN, 'Guess the number')
+module(GTN)
 

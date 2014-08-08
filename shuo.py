@@ -8,8 +8,8 @@ import os
 import glob
 import sh
 import getpass
-import keystore
 from termcolor import cprint
+
 execfile("./config.py")
 running = True
 readbuffer = ''
@@ -21,9 +21,9 @@ db = {
     'modules': [],
 }
 #--------Load Mods--------#
-def module(mod_class, name):
+def module(mod_class):
     db['modules'].append(mod_class())
-    print("Loaded module: %s" % name)
+    print("Loaded module: %s" % (mod_class().name))
 
 for mod in glob.glob('./modules/*.py'):
     with open(mod, 'r') as f:

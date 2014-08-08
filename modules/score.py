@@ -14,6 +14,7 @@ class Score(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
         self.cmd_prefix = '@'
+        self.name = 'Score'
         if os.path.exists('./scores.json'):
             self.scores = json.loads(open('./scores.json').read())
         else:
@@ -60,4 +61,4 @@ class Score(sh.Module):
             if len(data['Args']) > 1:
                 send_message(data['Channel'], str(self.scores[data['Channel']][data['Args'][1].lower()]))
 #----------#
-module(Score, 'Score')
+module(Score)

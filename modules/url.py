@@ -16,6 +16,7 @@ import pafy as youtube
 class URL(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
+        self.name = "URL Titles"
 
     def get_title(self, url):
         return BeautifulSoup(urllib2.urlopen(url)).title.string
@@ -39,4 +40,4 @@ class URL(sh.Module):
                 print url, self.get_title(url)
                 send_message(data['Channel'], "[%s] => %s" % (url, str(self.get_title(url)).replace('\n', '').lstrip()))
 #------#
-module(URL, 'Titles')
+module(URL)

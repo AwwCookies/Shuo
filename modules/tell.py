@@ -18,6 +18,7 @@ import os
 class Tell(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
+        self.name = "Tell"
         if os.path.exists('./tell.json'):
             self.pending_messages = json.loads(open('./tell.json').read())
         else:
@@ -51,4 +52,4 @@ class Tell(sh.Module):
                 self.add_msg(data['Args'][1].lower(), '<' + data['Nick'] + '> ' + ' '.join(data['Message'].split()[2:]) , data['Channel'])
                 send_message(data['Channel'], sh.color('Okay', 'blue'))
 #-----------------#
-module(Tell, 'Tell')
+module(Tell)

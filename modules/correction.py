@@ -10,6 +10,7 @@ class Correction(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
         self.messages = {}
+        self.name = "Corrections"
 
     def on_message(self, data):
         if data['Message'].startswith('s/'):
@@ -18,4 +19,4 @@ class Correction(sh.Module):
         else:
             self.messages[data['Nick']] = data['Message']
 #------#
-module(Correction, 'Correction')
+module(Correction)
