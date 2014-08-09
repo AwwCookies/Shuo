@@ -1,6 +1,6 @@
 ## Shuo the better IRC bot
 ## Created by Emma Jones
-## Version: 0.0.1 - July 30, 2014
+## Version: 1.0.0 - Aug 9th, 2014
 
 import socket
 import string
@@ -9,12 +9,12 @@ import glob
 import sh
 import time
 import getpass
+import thread
 from termcolor import cprint
 
 execfile("./config.py")
 running = True
 readbuffer = ''
-pretty_messages = True
 #-------------------------#
 db = {
     'Joined Channels': [],
@@ -60,6 +60,15 @@ def startswith(string, word, splitby=' '):
 
 def is_owner(host):
     return host.split('@')[1] in OTHER['OWNER']
+
+def tick(x):
+    ticks = 0
+    while True:
+        ticks += 1
+        for mod in db['modules']:
+            mod.on_tick(ticks)
+        time.sleep(x)
+thread.start_new_thread(tick, (1,))
 #-------------Basic IRC Commands -----------#
 def set_mode(channel, mode, nick):
     sock.send("MODE %s %s %s\r\n" % (channel, mode, nick)) ## Sent Mode

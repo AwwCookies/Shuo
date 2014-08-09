@@ -1,6 +1,5 @@
 ## Config file for Shuo "The better IRC Bot"
 ## Created by Emma Jones
-
 BOT = {
     "Nick": 'Shuo'
 }
@@ -22,3 +21,5 @@ OTHER = {
     'OWNER': ['princess-of-cooki.es', '127.0.0.1'],
     'NickServ': str(raw_input('NickServ: ')),
 }
+#-------#
+pretty_messages = True

@@ -11,7 +11,7 @@ class ChannelManagement(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
         self.name = "Channel Management"
-        self.admins = [] + OTHER['OWNER']
+        self.admins = ['unaffiliated/amalynn'] + OTHER['OWNER']
         self.cmd_prefix = '@'
         self.hosts = {}
         self.kick_msg = 'Bye!'

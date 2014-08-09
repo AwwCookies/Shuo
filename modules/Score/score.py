@@ -41,7 +41,7 @@ class Score(sh.Module):
         nick = nick.lower()
         if self.scores.get(data['Channel']):
             if self.scores[data['Channel']].get(nick):
-                self.scores[data['Channel']][nick] -= 1
+                self.scores[data['Channel']][nick] += -1
             else:
                 self.scores[data['Channel']][nick] = -1
         else:

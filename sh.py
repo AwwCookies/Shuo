@@ -1,29 +1,39 @@
 class Module:
-    def __init__(self):
+    def __init__(self):  # Called when the bot first starts up
         self.name = "Unnamed Module"
 
-    def on_message(self, data):
+    def on_message(self, data):  # Called when a message is send to a channel 
+        # data:
+            # Nick: Nick of the user talking
+            # Host: Host of the user talking
+            # Channel: Channel in which, the user is talking in
+            # Type: Will always be PRIVMSG for on_message()
+            # Message: What the person said
+            # Args: The message split by spaces
         pass
 
-    def on_part(self, data):
+    def on_part(self, data):  # Called when someone leaves a channel
         pass
 
-    def on_join(self, data):
+    def on_join(self, data):  # Called when someone joins a channel
         pass
 
-    def on_notice(self, data):
+    def on_notice(self, data):  # Called when someone sends you a notice
         pass
 
-    def on_mode(self, data):
+    def on_mode(self, data):  # Called when a mode is changed in a channel
         pass
 
-    def on_nick(self, data):
+    def on_nick(self, data):  # Called when someone changes their nick
         pass
 
-    def on_kick(self, data):
+    def on_kick(self, data):  # Called when someone gets kicked from a channel
         pass
 
-    def __del__(self):
+    def on_tick(self, data):  # Called every second
+        pass
+
+    def __del__(self):  # Called when the bot is shutdown
         pass
 
 def color(text, c):

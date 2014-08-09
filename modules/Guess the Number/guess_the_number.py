@@ -22,13 +22,15 @@ class GTN(sh.Module):
         self.player = None
         self.cmd_prefix = '-'
         self.name = "Guess The Number"
-        self.number = random.randint(0, 100)
+        self.number = None
         self.running = False
 
     def start_game(self, host):
-        print self.number
+        self.number = random.randint(0, 100)
         self.player = host
         self.running = True
+        print self.number
+
 
     def end_game(self):
         self.running = False
