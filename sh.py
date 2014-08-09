@@ -20,6 +20,9 @@ class Module:
     def on_nick(self, data):
         pass
 
+    def on_kick(self, data):
+        pass
+
     def __del__(self):
         pass
 

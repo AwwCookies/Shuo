@@ -7,6 +7,7 @@ import string
 import os
 import glob
 import sh
+import time
 import getpass
 from termcolor import cprint
 
@@ -28,7 +29,7 @@ def module(mod_class, metadata=None):
     db['modules'].append(mod_class())
     print("Loaded module: %s" % (mod_class().name))
 
-for folder in glob.glob('./*/'):
+for folder in glob.glob('./modules/*/'):
     for mod in glob.glob(folder + '*.py'):
         with open(mod, 'r') as f:
             if f.readlines()[0].strip() == '## SHUO MODULE ##':
@@ -114,6 +115,7 @@ if not os.path.exists("modules"):
     os.mkdir("modules")
 #-------------------------------------------#
 while running:
+    time.sleep(0.1)
     readbuffer += sock.recv(1024)
     tempdata = readbuffer.replace("!", " !").split()
     try:
@@ -138,10 +140,12 @@ while running:
                     cprint('%s (%s) send you a notice: %s' % (data['Nick'], data['Host'], data['Message']), 'magenta')
                 elif data['Type'] == 'MODE':
                     cprint('(%s (%s) set mode %s in %s' % (data['Nick'], data['Host'], data['Message'], data['Channel']), 'yellow')
-                else:
-                    print data
-            else:
-                print data
+                elif data['Type'] == 'PRIVMSG':
+                    cprint('(%s (%s) in %s said: %s' % (data['Nick'], data['Host'], data['Channel'], data['Message']), 'cyan')
+                #else:
+                 #   print data
+            #else:
+                #print data
     except:
         pass
     #-------------------------------#
@@ -161,8 +165,9 @@ while running:
             if data['Type'] == 'PART': mod.on_part(data);
             if data['Type'] == 'JOIN': mod.on_join(data);
             if data['Type'] == 'NOTICE': mod.on_notice(data);
-            if data['Type'] == 'NICK': mon.on_nick(data);
+            if data['Type'] == 'NICK': mod.on_nick(data);
             if data['Type'] == 'MODE': data['Mode'] = data['Message'].split()[0]; mod.on_mode(data);
+            if data['Type'] == 'KICK': mod.on_kick(data);
     except Exception, e:
         print(e.message)
     #-------------------------------#
