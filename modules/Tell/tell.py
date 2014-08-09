@@ -19,14 +19,15 @@ class Tell(sh.Module):
     def __init__(self):
         sh.Module.__init__(self)
         self.name = "Tell"
-        if os.path.exists('./tell.json'):
-            self.pending_messages = json.loads(open('./tell.json').read())
+        self.filename = './tell.json'
+        if os.path.exists(self.filename):
+            self.pending_messages = json.loads(open(self.filename).read())
         else:
             self.pending_messages = {}
         self.cmd_prefix = '@'
 
     def _save(self):
-        with open('./tell.json', 'w') as f:
+        with open(self.filename, 'w') as f:
             f.write(json.dumps(self.pending_messages))
 
     def add_msg(self, nick, message, channel):

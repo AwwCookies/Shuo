@@ -13,24 +13,27 @@ from termcolor import cprint
 execfile("./config.py")
 running = True
 readbuffer = ''
+pretty_messages = True
 #-------------------------#
 db = {
     'Joined Channels': [],
     'FIRST_RUN': True,
     'commands': {},
     'modules': [],
+    'MOTD': "",
+    "ServerCap": "",
 }
 #--------Load Mods--------#
-def module(mod_class):
+def module(mod_class, metadata=None):
     db['modules'].append(mod_class())
     print("Loaded module: %s" % (mod_class().name))
 
-for mod in glob.glob('./modules/*.py'):
-    with open(mod, 'r') as f:
-        if f.readlines()[0].strip() == '## SHUO MODULE ##':
-            execfile(mod)
-#-------------------------#
-# Connect to IRC Server
+for folder in glob.glob('./*/'):
+    for mod in glob.glob(folder + '*.py'):
+        with open(mod, 'r') as f:
+            if f.readlines()[0].strip() == '## SHUO MODULE ##':
+                execfile(mod)
+#--Connect to IRC Server--#
 def connect():
     cprint('Connecting to: %s as: %s' % (CONN_SETTINGS['Server'], BOT['Nick']), 'blue')
     global sock
@@ -41,10 +44,7 @@ def connect():
     sock.send("NICK %s\r\n" % CONN_SETTINGS["Nick"])  # Tell the Server your nick
     sock.send("USER %s %s bla :%s\r\n" % (CONN_SETTINGS["Ident"], CONN_SETTINGS["Server"], CONN_SETTINGS["RealName"]))  # Tell the server your user info
 connect()
-
-#-------------------------------------------#
-
-#-------------------------------------------#
+#------------Basic Module Functions---------#
 def log(msg, p = "info"):
     if p == "info":
         cprint("[info]: %s" % msg, 'grey')
@@ -57,10 +57,13 @@ def register_commands(commands):
 def startswith(string, word, splitby=' '):
     return string.split(splitby)[0] == word
 
+def is_owner(host):
+    return host.split('@')[1] in OTHER['OWNER']
+#-------------Basic IRC Commands -----------#
 def set_mode(channel, mode, nick):
     sock.send("MODE %s %s %s\r\n" % (channel, mode, nick)) ## Sent Mode
     log('(set_mode) Setting %s on %s in %s' % (mode, nick, channel), 'info')
-#-------------Basic IRC Commands -----------#
+
 def join_channel(channel):
     '''Joins the bot to a channel.'''
     sock.send("JOIN %s\r\n" % channel)
@@ -121,7 +124,24 @@ while running:
             "Channel":tempdata[3],
             "Message":' '.join(tempdata[4:]).lstrip(":")
         }
-        print data
+        if data['Host'] == '372':
+            db['MOTD'] += data['Message']
+        elif data['Host'] == '001':
+            db['ServerCap'] += data['Message']
+        else:
+            if pretty_messages:
+                if data['Type'] == 'JOIN':
+                    cprint('(%s (%s) joined -> %s)' % (data['Nick'], data['Host'], data['Channel']), 'blue')
+                elif data['Type'] == 'PART':
+                    cprint('(%s (%s) left <- %s' % (data['Nick'], data['Host'], data['Channel']), 'green')
+                elif data['Type'] == 'NOTICE':
+                    cprint('%s (%s) send you a notice: %s' % (data['Nick'], data['Host'], data['Message']), 'magenta')
+                elif data['Type'] == 'MODE':
+                    cprint('(%s (%s) set mode %s in %s' % (data['Nick'], data['Host'], data['Message'], data['Channel']), 'yellow')
+                else:
+                    print data
+            else:
+                print data
     except:
         pass
     #-------------------------------#
@@ -142,9 +162,7 @@ while running:
             if data['Type'] == 'JOIN': mod.on_join(data);
             if data['Type'] == 'NOTICE': mod.on_notice(data);
             if data['Type'] == 'NICK': mon.on_nick(data);
-            if data['Type'] == 'MODE':
-                data['Mode'] = data['Message'].split()[0]
-                mod.on_mode(data)
+            if data['Type'] == 'MODE': data['Mode'] = data['Message'].split()[0]; mod.on_mode(data);
     except Exception, e:
         print(e.message)
     #-------------------------------#
