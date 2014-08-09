@@ -135,15 +135,19 @@ while running:
                 if data['Type'] == 'JOIN':
                     cprint('(%s (%s) joined -> %s)' % (data['Nick'], data['Host'], data['Channel']), 'blue')
                 elif data['Type'] == 'PART':
-                    cprint('(%s (%s) left <- %s' % (data['Nick'], data['Host'], data['Channel']), 'green')
+                    cprint('(%s (%s) left <- %s)' % (data['Nick'], data['Host'], data['Channel']), 'green')
                 elif data['Type'] == 'NOTICE':
-                    cprint('%s (%s) send you a notice: %s' % (data['Nick'], data['Host'], data['Message']), 'magenta')
+                    cprint('%s (%s) send you a notice: %s)' % (data['Nick'], data['Host'], data['Message']), 'magenta')
                 elif data['Type'] == 'MODE':
-                    cprint('(%s (%s) set mode %s in %s' % (data['Nick'], data['Host'], data['Message'], data['Channel']), 'yellow')
+                    cprint('(%s (%s) set mode %s in %s)' % (data['Nick'], data['Host'], data['Message'], data['Channel']), 'yellow')
                 elif data['Type'] == 'PRIVMSG':
-                    cprint('(%s (%s) in %s said: %s' % (data['Nick'], data['Host'], data['Channel'], data['Message']), 'cyan')
-                #else:
-                 #   print data
+                    cprint('(%s (%s) in %s said: %s)' % (data['Nick'], data['Host'], data['Channel'], data['Message']), 'cyan')
+                elif data['Type'] == 'KICK':
+                    kicked = data['Message'].split(' :')[0]
+                    reason = data['Message'].split(' :')[1]
+                    cprint('(%s (%s) kicked %s from %s because: %s' % (data['Nick'], data['Host'], kicked, data['Channel'], reason), 'red')
+                else:
+                   print data
             #else:
                 #print data
     except:
@@ -166,8 +170,13 @@ while running:
             if data['Type'] == 'JOIN': mod.on_join(data);
             if data['Type'] == 'NOTICE': mod.on_notice(data);
             if data['Type'] == 'NICK': mod.on_nick(data);
-            if data['Type'] == 'MODE': data['Mode'] = data['Message'].split()[0]; mod.on_mode(data);
-            if data['Type'] == 'KICK': mod.on_kick(data);
+            if data['Type'] == 'MODE':
+                data['Mode'] = data['Message'].split()[0]
+                mod.on_mode(data);
+            if data['Type'] == 'KICK': 
+                data['Kicked'] = data['Message'].split(' :')[0]
+                data['Reason'] = data['Message'].split(' :')[1]
+                mod.on_kick(data)
     except Exception, e:
         print(e.message)
     #-------------------------------#
